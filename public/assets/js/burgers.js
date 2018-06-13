@@ -1,26 +1,17 @@
 // Make sure we wait to attach our handlers until the DOM is fully loaded.
 $(document).ready(function() {
-    // $(document).on("change", input, function(event){
-
-    // });
-    // $("input").change(function(){
-    //   alert("The text has been changed.");
-    // $(this).val();
-    // });
-    //$( "input[type='text']" ).change(function(event) {
-    
-    // $(document).on("change", $("input[type='text']").val(), function(event){  
-    //$("input").change(function(event){
-    $("body").on('change', "input[class='list']", function(event) {
+   
+    $("body").on('click', "button[class='devour']", function(event) {
       event.preventDefault();
-      console.log($(this).val());
+      console.log($(this).siblings(".list").val());
       var id = $(this).parent().attr("id");
-      var newburgername = $(this).val();
+      var newburgername = $(this).siblings(".list").val();
+      var devoured = true;
       console.log("changed burger id: " + id);
       console.log("changed burger name: " + newburgername);
       var changedburger = {
         burger_name: newburgername,
-        // devoured: 0
+        devoured: true
       };
      console.log(changedburger);
     // Send the PUT request.
@@ -31,43 +22,38 @@ $(document).ready(function() {
         function() {
            console.log("changed burger name to", newburgername);
         // Reload the page to get the updated list
-        location.reload();
+           location.reload();  //this doesn't work, you have to refresh the page
          }
         );
      });
       // Check input( $( this ).val() ) for validity here
-    });
-  
+   
+   //
+    //$("body").on('click', "button[id=submit]", function(event) {
     $("#submit").on("click", function(event) {
       // Make sure to preventDefault on a submit event.
       event.preventDefault();
-  
+      console.log($(this).siblings(".newburger").val().trim());
       var newburger = {
-        burger: $("input[name=burger]").val().trim()
+        burger_name: $(this).siblings(".newburger").val(),
+        devoured: false
       };
        console.log(newburger);
       // Send the POST request.
+      // $.post("/api/burgers",newburger)
       $.ajax("/api/burgers", {
         type: "POST",
         data: newburger
-      }).then(function() {
+      })
+      .then(function(data) {
           console.log("created new burger");  
           // Reload the page to get the updated list
           location.reload();
         }
       );
 
-      // $("body").on('click', "button[class='devour']", function(event) {
-      // //$("body").on('click', "button[class='devour']", function(event) {
-      //   event.preventDefault();
-      //   var id=$(this).parent().attr("id");
-      //   console.log(id);
-      //   $("'#"+id+"'").appendTo("#devourlist");
-        //remove form and add input now allow edit to devour list
-        //append input to devourlist 
-      // })
-      
+    
 
     });
 
-  
+  }); 
