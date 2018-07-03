@@ -1,8 +1,2 @@
-package-lock.json
-config/
-controllers/
-db/
-models/
+
 node_modules/
-server.js
-views/
